@@ -1,10 +1,12 @@
 import React from 'react';
-//import './Insight.css';
+import Map from '../components/Map';
+import './InsightPage.css';
 
 const InsightPage = () => {
     return (
-        <div>
-            <h1>hello this is InsightPage</h1>
+        <div className="insight-page">
+            <h1>Insight Page</h1>
+            <Map />
         </div>
     );
 };
