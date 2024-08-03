@@ -4,32 +4,21 @@
     position: relative;
     text-align: center;
     margin-top: 0px;
-    /* Add some spacing between sections */
     background-color: #f5f5f5;
-    /* Background color for sections */
     padding: 5px;
-
     height: 800px;
-    /* Set a fixed height for the containers */
     overflow: hidden;
-    /* Ensure the content fits within the container */
 }
 
 /* Image styles */
 .hero-image,
 .landmark-image {
     width: 100%;
-    /* Full width of the container */
     height: 100%;
-    /* Full height of the container */
     object-fit: cover;
-    /* Ensures the image covers the container without distortion */
     border-radius: 15px;
-    /* Rounded corners */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    /* Box shadow for the image */
     margin: auto;
-    /* Center the image */
 }
 
 /* Text overlay styles */
@@ -41,15 +30,16 @@
     transform: translate(-50%, -50%);
     color: white;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-    /* Text shadow for readability */
 }
 
+/* Down arrow styles */
 .down-arrow {
     position: absolute;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 24px;
+    font-size: 36px;
+    /* Increase size */
     color: white;
     cursor: pointer;
     opacity: 0.8;
@@ -57,7 +47,25 @@
 }
 
 .down-arrow:hover {
-    opacity: 2;
+    opacity: 1;
+}
+
+/* Up arrow styles */
+.up-arrow {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 36px;
+    /* Increase size */
+    color: white;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.up-arrow:hover {
+    opacity: 1;
 }
 
 /* Button styles */
@@ -70,7 +78,6 @@
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s, color 0.3s;
-    /* Smooth transition for hover effect */
 }
 
 .plan-button:hover,
@@ -78,7 +85,6 @@
     background-color: black;
     color: white;
 }
-
 
 /* Sticky navigation bar */
 .navbar {
@@ -89,5 +95,4 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 10px 0;
     margin: 0;
-    /* Remove any margin */
 }

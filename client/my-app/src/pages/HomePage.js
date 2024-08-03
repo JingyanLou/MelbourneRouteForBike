@@ -18,6 +18,10 @@ const HomePage = () => {
         landmarksSection.scrollIntoView({ behavior: 'smooth' });
     };
 
+    const handleScrollUp = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     return (
         <div>
             <div className="hero">
@@ -25,7 +29,6 @@ const HomePage = () => {
                 <div className="hero-text">
                     <h2>Ready to ride? Plan your trip now</h2>
                     <button className="plan-button" onClick={handlePlanNowClick}>Plan now</button>
-
                 </div>
                 <div className="down-arrow" onClick={handleScrollDown}>&#x2193;</div>
             </div>
@@ -36,10 +39,10 @@ const HomePage = () => {
                     <h2>Discover more Melbourne landmarks</h2>
                     <button className="discover-button" onClick={handleDiscoverClick}>Discover</button>
                 </div>
+                <div className="up-arrow" onClick={handleScrollUp}>&#x2191;</div>
             </section>
         </div>
     );
 };
 
 export default HomePage;
-
