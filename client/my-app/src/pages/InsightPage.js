@@ -1,10 +1,11 @@
 import React from 'react';
 import './InsightPage.css';
 
+import ChoroplethMap from '../components/ChoroplethMap';
 const InsightPage = () => {
     return (
         <div className="insight-page">
-            <h1>Insight Page</h1>
+            <ChoroplethMap></ChoroplethMap>
         </div>
     );
 };

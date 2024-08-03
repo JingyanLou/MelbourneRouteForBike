@@ -6,7 +6,6 @@ import Map from '../components/Map';
 const RoutePage = () => {
     return (
         <div className="Route-page">
-            <h1>This is RoutePage</h1>
             <Map />
         </div>
     );

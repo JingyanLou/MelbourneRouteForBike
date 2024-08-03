@@ -1,53 +1,67 @@
-.App-header {
-    font-family: Arial, sans-serif;
-}
-
-.hero {
-    position: relative;
-    text-align: center;
-}
-
-.hero-image {
-    width: 100%;
-    height: auto;
-}
-
-.hero-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-}
-
-.plan-button {
-    background-color: white;
-    color: black;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
+/* Container styles */
+.hero,
 .landmarks {
     position: relative;
     text-align: center;
-    margin-top: 0%;
+    margin-top: 0px;
+    /* Add some spacing between sections */
+    background-color: #f5f5f5;
+    /* Background color for sections */
+    padding: 5px;
+
+    height: 800px;
+    /* Set a fixed height for the containers */
+    overflow: hidden;
+    /* Ensure the content fits within the container */
 }
 
+/* Image styles */
+.hero-image,
 .landmark-image {
     width: 100%;
-    height: auto;
+    /* Full width of the container */
+    height: 100%;
+    /* Full height of the container */
+    object-fit: cover;
+    /* Ensures the image covers the container without distortion */
+    border-radius: 15px;
+    /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Box shadow for the image */
+    margin: auto;
+    /* Center the image */
 }
 
+/* Text overlay styles */
+.hero-text,
 .landmark-text {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    /* Text shadow for readability */
 }
 
+.down-arrow {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.down-arrow:hover {
+    opacity: 2;
+}
+
+/* Button styles */
+.plan-button,
 .discover-button {
     background-color: white;
     color: black;
@@ -55,4 +69,25 @@
     padding: 10px 20px;
     cursor: pointer;
     border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    /* Smooth transition for hover effect */
+}
+
+.plan-button:hover,
+.discover-button:hover {
+    background-color: black;
+    color: white;
+}
+
+
+/* Sticky navigation bar */
+.navbar {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+    margin: 0;
+    /* Remove any margin */
 }

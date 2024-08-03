@@ -13,17 +13,22 @@ const HomePage = () => {
         navigate('/insight');
     };
 
+    const handleScrollDown = () => {
+        const landmarksSection = document.querySelector('.landmarks');
+        landmarksSection.scrollIntoView({ behavior: 'smooth' });
+    };
+
     return (
         <div>
-            <header className="App-header">
-                <div className="hero">
-                    <img src="/images/melbournebike.jpg" alt="Melbourne Bicycle Path" className="hero-image" />
-                    <div className="hero-text">
-                        <h2>Ready to ride? Plan your trip now</h2>
-                        <button className="plan-button" onClick={handlePlanNowClick}>Plan now</button>
-                    </div>
+            <div className="hero">
+                <img src="/images/melbournebike.jpg" alt="Melbourne Bicycle Path" className="hero-image" />
+                <div className="hero-text">
+                    <h2>Ready to ride? Plan your trip now</h2>
+                    <button className="plan-button" onClick={handlePlanNowClick}>Plan now</button>
+
                 </div>
-            </header>
+                <div className="down-arrow" onClick={handleScrollDown}>&#x2193;</div>
+            </div>
 
             <section className="landmarks">
                 <img src="/images/yarrabike.jpeg" alt="Melbourne Landmarks" className="landmark-image" />
@@ -37,3 +42,4 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
