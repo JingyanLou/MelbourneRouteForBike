@@ -36,7 +36,7 @@ const HomePage = () => {
             <section className="landmarks">
                 <img src="/images/yarrabike.jpeg" alt="Melbourne Landmarks" className="landmark-image" />
                 <div className="landmark-text">
-                    <h2>Discover more Melbourne landmarks</h2>
+                    <h2>Discover Historical Accidents for insights</h2>
                     <button className="discover-button" onClick={handleDiscoverClick}>Discover</button>
                 </div>
                 <div className="up-arrow" onClick={handleScrollUp}>&#x2191;</div>
