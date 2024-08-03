@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import mapboxgl from 'mapbox-gl';
 import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
 import polyline from '@mapbox/polyline';
@@ -83,6 +83,28 @@ const Map = () => {
         });
     }, []);
 
+    const countAccidentsOnRoute = useCallback((routeCoordinates, accidentData) => {
+        const thresholdDistance = 7; // Adjust this threshold distance as necessary for testing
+        console.log(`Threshold distance: ${thresholdDistance} meters`);
+        let count = 0;
+
+        const accidentGrid = buildGrid(accidentData, 0.0001); // Build a grid with a smaller cell size for higher precision
+        console.log('Accident grid:', accidentGrid);
+
+        for (let routeCoord of routeCoordinates) {
+            const potentialAccidents = getNearbyPoints(routeCoord, accidentGrid, 0.0001);
+            for (let accidentPoint of potentialAccidents) {
+                const distance = calculateDistance(routeCoord, accidentPoint.geometry.coordinates);
+                console.log(`Distance between route point ${routeCoord} and accident point ${accidentPoint.geometry.coordinates}: ${distance} meters`);
+                if (distance <= thresholdDistance) {
+                    count++;
+                    break;
+                }
+            }
+        }
+        return count;
+    }, []);
+
     useEffect(() => {
         console.log('routeCoordinates:', routeCoordinates);
         console.log('accidentData:', accidentData);
@@ -93,24 +115,7 @@ const Map = () => {
             setAccidentsOnRoute(accidentsOnRoute);
             console.log('Accidents on route:', accidentsOnRoute);
         }
-    }, [routeCoordinates, accidentData]);
-
-    const countAccidentsOnRoute = (routeCoordinates, accidentData) => {
-        const thresholdDistance = 500; // Adjust this threshold distance as necessary for testing
-        let count = 0;
-
-        for (let point of accidentData) {
-            for (let routeCoord of routeCoordinates) {
-                const distance = calculateDistance(routeCoord, point.geometry.coordinates);
-                console.log(`Distance between route point ${routeCoord} and accident point ${point.geometry.coordinates}: ${distance} meters`);
-                if (distance <= thresholdDistance) {
-                    count++;
-                    break;
-                }
-            }
-        }
-        return count;
-    };
+    }, [routeCoordinates, accidentData, countAccidentsOnRoute]);
 
     const calculateDistance = (coord1, coord2) => {
         const [lat1, lon1] = coord1;
@@ -127,7 +132,42 @@ const Map = () => {
             Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        return R * c;
+        const distance = R * c;
+        console.log(`Calculated distance: ${distance} meters`);
+        return distance;
+    };
+
+    const buildGrid = (data, cellSize) => {
+        const grid = {};
+        for (let point of data) {
+            const [lon, lat] = point.geometry.coordinates;
+            const x = Math.floor(lon / cellSize);
+            const y = Math.floor(lat / cellSize);
+            const key = `${x},${y}`;
+            if (!grid[key]) {
+                grid[key] = [];
+            }
+            grid[key].push(point);
+        }
+        return grid;
+    };
+
+    const getNearbyPoints = (coord, grid, cellSize) => {
+        const [lon, lat] = coord;
+        const x = Math.floor(lon / cellSize);
+        const y = Math.floor(lat / cellSize);
+
+        let points = [];
+        for (let i = -1; i <= 1; i++) {
+            for (let j = -1; j <= 1; j++) {
+                const neighborKey = `${x + i},${y + j}`;
+                if (grid[neighborKey]) {
+                    points = points.concat(grid[neighborKey]);
+                }
+            }
+        }
+        console.log(`Nearby points for coordinate ${coord}:`, points);
+        return points;
     };
 
     return (
