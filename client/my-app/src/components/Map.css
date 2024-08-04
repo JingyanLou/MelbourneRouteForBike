@@ -1,4 +1,69 @@
-.map-container {
+/* Container for the entire map and sidebar */
+.map-wrapper {
+    display: grid;
+    /* Use CSS Grid for layout */
+    grid-template-columns: 300px 1fr;
+    /* Sidebar takes 300px, rest is for the map */
+    gap: 20px;
+    /* Space between sidebar and map */
     height: 100vh;
+    /* Full viewport height */
+    padding: 20px;
+    /* Padding around the grid */
+    box-sizing: border-box;
+    /* Include padding and border in element's total width and height */
+}
+
+/* Sidebar containing the directions and accident info */
+.sidebar {
+    display: flex;
+    /* Use flexbox for layout */
+    flex-direction: column;
+    /* Stack children vertically */
+    gap: 20px;
+    /* Space between children */
+}
+
+/* Container for the Mapbox Directions component */
+.directions-container {
+    height: auto;
+    /* Auto height based on content */
+    width: 300px;
+    padding: 5px;
+    /* Padding inside the container */
+    background: #fff;
+    /* White background */
+    border-radius: 8px;
+    /* Rounded corners */
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for depth */
+}
+
+/* Container for the Mapbox map */
+.map-container {
+    position: relative;
+    /* Position relative to its normal position */
+    border-radius: 8px;
+    /* Rounded corners */
+    overflow: hidden;
+    /* Hide overflow content */
+    height: 90%;
+    /* Height of the map container */
     width: 100%;
+    /* Full width of the parent container */
+}
+
+/* Container for the accident information */
+.accident-info {
+    padding: 10px;
+    height: auto;
+    /* Auto height based on content */
+    width: 290px;
+    /* Padding inside the container */
+    background: #fff;
+    /* White background */
+    border-radius: 8px;
+    /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for depth */
 }
