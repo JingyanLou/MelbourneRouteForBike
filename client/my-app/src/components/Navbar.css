@@ -1,19 +1,55 @@
+/* Navbar container */
 .navbar {
     display: flex;
+    /* Use flexbox for layout */
     justify-content: space-between;
-    padding: 20px;
+    /* Space out the brand and links */
+    align-items: center;
+    /* Center items vertically */
+    padding: 10px 20px;
+    /* Padding inside the navbar */
     background-color: #fff;
+    /* White background */
     border-bottom: 1px solid #ddd;
+    /* Light grey bottom border */
 }
 
+/* Navbar brand (title) */
 .navbar-brand {
     font-size: 24px;
+    /* Font size for the brand */
     font-weight: bold;
+    /* Bold text */
     padding-left: 10px;
+    /* Padding on the left side */
 }
 
+/* Navbar links */
 .navbar-links a {
     margin: 0 15px;
+    /* Margin on left and right */
     text-decoration: none;
+    /* Remove underline from links */
     color: #333;
+    /* Dark grey text color */
+    padding: 10px 15px;
+    /* Padding for clickable area */
+    border-radius: 5px;
+    /* Rounded corners */
+    transition: background-color 0.3s, color 0.3s;
+    /* Smooth transition for background and text color */
+    display: inline-flex;
+    /* Use flexbox for layout */
+    align-items: center;
+    /* Center items vertically */
+    justify-content: center;
+    /* Center items horizontally */
+}
+
+/* Hover effect for navbar links */
+.navbar-links a:hover {
+    background-color: black;
+    /* Black background on hover */
+    color: white;
+    /* White text on hover */
 }
