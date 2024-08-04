@@ -16,9 +16,33 @@ const Map = () => {
     const [accidentsOnRoute, setAccidentsOnRoute] = useState(0);
     const [routeCoordinates, setRouteCoordinates] = useState([]);
 
-    useEffect(() => {
-        console.log("Map container reference: ", mapContainer.current);
-        if (map.current) return; // initialize map only once
+    const fetchAccidentData = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/api/accidents');
+            const data = await response.json();
+            const geojson = {
+                type: 'FeatureCollection',
+                features: data.map(point => ({
+                    type: 'Feature',
+                    properties: {
+                        severity: point.SEVERITY
+                    },
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [point.LONGITUDE, point.LATITUDE]
+                    }
+                }))
+            };
+            setAccidentData(geojson.features);
+            return geojson;
+        } catch (error) {
+            console.error('Error fetching accident data:', error);
+            return null;
+        }
+    };
+
+    const initializeMap = async () => {
+        if (map.current) return; // Initialize map only once
 
         if (mapContainer.current) {
             map.current = new mapboxgl.Map({
@@ -36,173 +60,154 @@ const Map = () => {
 
             directionsContainer.current.appendChild(directions.onAdd(map.current));
 
-            // Fetch accident data from the backend
-            fetch('http://localhost:5000/api/accidents')
-                .then(response => response.json())
-                .then(data => {
-                    const geojson = {
-                        type: 'FeatureCollection',
-                        features: data.map(point => ({
-                            type: 'Feature',
-                            properties: {
-                                severity: point.SEVERITY
-                            },
-                            geometry: {
-                                type: 'Point',
-                                coordinates: [point.LONGITUDE, point.LATITUDE]
-                            }
-                        }))
-                    };
+            map.current.on('load', async () => {
+                const geojson = await fetchAccidentData();
+                if (!geojson) return;
 
-                    setAccidentData(geojson.features);
+                map.current.addSource('accidents', {
+                    type: 'geojson',
+                    data: geojson,
+                    cluster: true,
+                    clusterMaxZoom: 14,
+                    clusterRadius: 50,
+                });
 
-                    map.current.on('load', () => {
-                        map.current.addSource('accidents', {
-                            type: 'geojson',
-                            data: geojson,
-                            cluster: true,
-                            clusterMaxZoom: 14,
-                            clusterRadius: 50,
-                        });
+                map.current.addLayer({
+                    id: 'accidents-heatmap',
+                    type: 'heatmap',
+                    source: 'accidents',
+                    maxzoom: 15,
+                    paint: {
+                        'heatmap-weight': [
+                            'interpolate',
+                            ['linear'],
+                            ['get', 'severity'],
+                            0, 0,
+                            6, 2,
+                        ],
+                        'heatmap-intensity': [
+                            'interpolate',
+                            ['linear'],
+                            ['zoom'],
+                            0, 1,
+                            15, 5,
+                        ],
+                        'heatmap-color': [
+                            'interpolate',
+                            ['linear'],
+                            ['heatmap-density'],
+                            0, 'rgba(33,102,172,0)',
+                            0.2, 'rgb(103,169,207)',
+                            0.4, 'rgb(209,229,240)',
+                            0.6, 'rgb(253,219,199)',
+                            0.8, 'rgb(239,138,98)',
+                            1, 'rgb(178,24,43)',
+                        ],
+                        'heatmap-radius': [
+                            'interpolate',
+                            ['linear'],
+                            ['zoom'],
+                            0, 20,
+                            15, 40,
+                        ],
+                        'heatmap-opacity': [
+                            'interpolate',
+                            ['linear'],
+                            ['zoom'],
+                            0, 1,
+                            15, 0.5,
+                        ],
+                    },
+                });
 
-                        map.current.addLayer({
-                            id: 'accidents-heatmap',
-                            type: 'heatmap',
-                            source: 'accidents',
-                            maxzoom: 15,
-                            paint: {
-                                'heatmap-weight': [
-                                    'interpolate',
-                                    ['linear'],
-                                    ['get', 'severity'],
-                                    0, 0,
-                                    6, 2,
-                                ],
-                                'heatmap-intensity': [
-                                    'interpolate',
-                                    ['linear'],
-                                    ['zoom'],
-                                    0, 1,
-                                    15, 5,
-                                ],
-                                'heatmap-color': [
-                                    'interpolate',
-                                    ['linear'],
-                                    ['heatmap-density'],
-                                    0, 'rgba(33,102,172,0)',
-                                    0.2, 'rgb(103,169,207)',
-                                    0.4, 'rgb(209,229,240)',
-                                    0.6, 'rgb(253,219,199)',
-                                    0.8, 'rgb(239,138,98)',
-                                    1, 'rgb(178,24,43)',
-                                ],
-                                'heatmap-radius': [
-                                    'interpolate',
-                                    ['linear'],
-                                    ['zoom'],
-                                    0, 20,
-                                    15, 40,
-                                ],
-                                'heatmap-opacity': [
-                                    'interpolate',
-                                    ['linear'],
-                                    ['zoom'],
-                                    0, 1,
-                                    15, 0.5,
-                                ],
-                            },
-                        });
+                map.current.addLayer({
+                    id: 'clusters',
+                    type: 'circle',
+                    source: 'accidents',
+                    filter: ['has', 'point_count'],
+                    paint: {
+                        'circle-color': [
+                            'step',
+                            ['get', 'point_count'],
+                            '#51bbd6',
+                            100,
+                            '#f1f075',
+                            750,
+                            '#f28cb1'
+                        ],
+                        'circle-radius': [
+                            'step',
+                            ['get', 'point_count'],
+                            20,
+                            100,
+                            30,
+                            750,
+                            40
+                        ]
+                    }
+                });
 
-                        map.current.addLayer({
-                            id: 'clusters',
-                            type: 'circle',
-                            source: 'accidents',
-                            filter: ['has', 'point_count'],
-                            paint: {
-                                'circle-color': [
-                                    'step',
-                                    ['get', 'point_count'],
-                                    '#51bbd6',
-                                    100,
-                                    '#f1f075',
-                                    750,
-                                    '#f28cb1'
-                                ],
-                                'circle-radius': [
-                                    'step',
-                                    ['get', 'point_count'],
-                                    20,
-                                    100,
-                                    30,
-                                    750,
-                                    40
-                                ]
-                            }
-                        });
+                map.current.addLayer({
+                    id: 'cluster-count',
+                    type: 'symbol',
+                    source: 'accidents',
+                    filter: ['has', 'point_count'],
+                    layout: {
+                        'text-field': '{point_count_abbreviated}',
+                        'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                        'text-size': 12
+                    }
+                });
 
-                        map.current.addLayer({
-                            id: 'cluster-count',
-                            type: 'symbol',
-                            source: 'accidents',
-                            filter: ['has', 'point_count'],
-                            layout: {
-                                'text-field': '{point_count_abbreviated}',
-                                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-                                'text-size': 12
-                            }
-                        });
+                map.current.addLayer({
+                    id: 'unclustered-point',
+                    type: 'circle',
+                    source: 'accidents',
+                    filter: ['!', ['has', 'point_count']],
+                    paint: {
+                        'circle-color': '#FF0000',
+                        'circle-radius': 8,
+                        'circle-stroke-width': 1,
+                        'circle-stroke-color': '#fff',
+                        'circle-opacity': 0.9
+                    }
+                });
 
-                        map.current.addLayer({
-                            id: 'unclustered-point',
-                            type: 'circle',
-                            source: 'accidents',
-                            filter: ['!', ['has', 'point_count']],
-                            paint: {
-                                'circle-color': '#FF0000',
-                                'circle-radius': 8,
-                                'circle-stroke-width': 1,
-                                'circle-stroke-color': '#fff',
-                                'circle-opacity': 0.9
-                            }
-                        });
-
-                        map.current.on('click', 'clusters', (e) => {
-                            const features = map.current.queryRenderedFeatures(e.point, {
-                                layers: ['clusters']
-                            });
-                            const clusterId = features[0].properties.cluster_id;
-                            map.current.getSource('accidents').getClusterExpansionZoom(
-                                clusterId,
-                                (err, zoom) => {
-                                    if (err) return;
-
-                                    map.current.easeTo({
-                                        center: features[0].geometry.coordinates,
-                                        zoom: zoom
-                                    });
-                                }
-                            );
-                        });
-
-                        map.current.on('click', 'unclustered-point', (e) => {
-                            const coordinates = e.features[0].geometry.coordinates.slice();
-                            const severity = e.features[0].properties.severity;
-
-                            new mapboxgl.Popup()
-                                .setLngLat(coordinates)
-                                .setHTML(`Severity: ${severity}`)
-                                .addTo(map.current);
-                        });
-
-                        map.current.on('mouseenter', 'clusters', () => {
-                            map.current.getCanvas().style.cursor = 'pointer';
-                        });
-                        map.current.on('mouseleave', 'clusters', () => {
-                            map.current.getCanvas().style.cursor = '';
-                        });
+                map.current.on('click', 'clusters', (e) => {
+                    const features = map.current.queryRenderedFeatures(e.point, {
+                        layers: ['clusters']
                     });
-                })
-                .catch(error => console.error('Error fetching accident data:', error));
+                    const clusterId = features[0].properties.cluster_id;
+                    map.current.getSource('accidents').getClusterExpansionZoom(
+                        clusterId,
+                        (err, zoom) => {
+                            if (err) return;
+
+                            map.current.easeTo({
+                                center: features[0].geometry.coordinates,
+                                zoom: zoom
+                            });
+                        }
+                    );
+                });
+
+                map.current.on('click', 'unclustered-point', (e) => {
+                    const coordinates = e.features[0].geometry.coordinates.slice();
+                    const severity = e.features[0].properties.severity;
+
+                    new mapboxgl.Popup()
+                        .setLngLat(coordinates)
+                        .setHTML(`Severity: ${severity}`)
+                        .addTo(map.current);
+                });
+
+                map.current.on('mouseenter', 'clusters', () => {
+                    map.current.getCanvas().style.cursor = 'pointer';
+                });
+                map.current.on('mouseleave', 'clusters', () => {
+                    map.current.getCanvas().style.cursor = '';
+                });
+            });
 
             directions.on('route', (event) => {
                 const route = event.route[0];
@@ -210,6 +215,10 @@ const Map = () => {
                 setRouteCoordinates(decodedCoordinates.map(coord => [coord[1], coord[0]]));
             });
         }
+    };
+
+    useEffect(() => {
+        initializeMap();
     }, []);
 
     const countAccidentsOnRoute = useCallback((routeCoordinates, accidentData) => {
@@ -295,7 +304,6 @@ const Map = () => {
                 <div className="accident-info">
                     Warning: There have been {accidentsOnRoute} accidents along this route.
                 </div>
-
             </div>
             <div ref={mapContainer} className="map-container" />
         </div>
