@@ -19,9 +19,11 @@ db.connect(err => {
     }
     console.log('MySQL Connected...');
 });
+//`accident_location`
+//VICTORIAN_ROAD_CRASH_DATA_2YR_CBD_URBAN
 
 app.get('/api/accidents', (req, res) => {
-    const sql = 'SELECT LATITUDE, LONGITUDE, SEVERITY FROM VICTORIAN_ROAD_CRASH_DATA_2YR_CBD_URBAN';
+    const sql = 'SELECT LATITUDE, LONGITUDE, SEVERITY FROM accident_location'; //for the route page, we are using accident_location
     db.query(sql, (err, results) => {
         if (err) throw err;
         res.send(results);
@@ -31,3 +33,13 @@ app.get('/api/accidents', (req, res) => {
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
+
+//useful command 
+// check sever running in port 5000 
+// lsof -i :5000
+
+//kill that process 
+//kill -9 PID
+
+//run the sever 
+//server % node src/server.js
