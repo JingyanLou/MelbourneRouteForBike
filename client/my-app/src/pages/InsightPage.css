@@ -26,6 +26,13 @@
     /* Add padding around the section */
 }
 
+/* Section for the filters above the Barchart component */
+.filters {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
 /* Section for the Barchart component within the sidebar */
 .barchart-section {
     flex: 1;

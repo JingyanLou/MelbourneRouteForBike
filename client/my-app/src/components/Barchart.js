@@ -7,10 +7,8 @@ import './Barchart.css';
 // Register the components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const Barchart = () => {
+const Barchart = ({ year, timezone }) => {
     const [data, setData] = useState([]);
-    const [year, setYear] = useState('2022');
-    const [timezone, setTimezone] = useState('Morning');
 
     useEffect(() => {
         if (year && timezone) {
@@ -40,21 +38,6 @@ const Barchart = () => {
     return (
         <div>
             <h2>Accident Severity Bar Chart</h2>
-            <div>
-                <label>Year:
-                    <select value={year} onChange={(e) => setYear(e.target.value)}>
-                        <option value="2022">2022</option>
-                        <option value="2023">2023</option>
-                    </select>
-                </label>
-                <label>Time Zone:
-                    <select value={timezone} onChange={(e) => setTimezone(e.target.value)}>
-                        <option value="Morning">Morning</option>
-                        <option value="Afternoon">Afternoon</option>
-                        <option value="Night">Night</option>
-                    </select>
-                </label>
-            </div>
             <Bar data={chartData} />
         </div>
     );

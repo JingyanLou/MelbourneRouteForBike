@@ -2,11 +2,9 @@ import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import './ChoroplethMap.css';
 
-const ChoroplethMap = () => {
+const ChoroplethMap = ({ year, timezone }) => {
     const mapContainerRef = useRef(null);
     const [hoverInfo, setHoverInfo] = useState(null);
-    const [year, setYear] = useState('');
-    const [timeZone, setTimeZone] = useState('');
     const accessToken = process.env.REACT_APP_MAPBOX_CHOROPLETH_ACCESS_TOKEN;
 
     const melbourneCoordinates = {
@@ -36,8 +34,8 @@ const ChoroplethMap = () => {
             if (year) {
                 filters.push(['==', 'YEAR', parseInt(year)]);
             }
-            if (timeZone) {
-                filters.push(['==', 'TIME_ZONE', timeZone]);
+            if (timezone) {
+                filters.push(['==', 'TIME_ZONE', timezone]);
             }
 
             const layerFilter = filters.length > 0 ? ['all', ...filters] : true;
@@ -79,29 +77,10 @@ const ChoroplethMap = () => {
         });
 
         return () => map.remove();
-    }, [accessToken, year, timeZone]);
+    }, [accessToken, year, timezone]);
 
     return (
         <div className="choropleth-map-container">
-            <div className="filters">
-                <label>
-                    Year:
-                    <select value={year} onChange={(e) => setYear(e.target.value)}>
-                        <option value="">Select Year</option>
-                        <option value="2022">2022</option>
-                        <option value="2023">2023</option>
-                    </select>
-                </label>
-                <label>
-                    Time Zone:
-                    <select value={timeZone} onChange={(e) => setTimeZone(e.target.value)}>
-                        <option value="">Select Time Zone</option>
-                        <option value="morning">Morning</option>
-                        <option value="afternoon">Afternoon</option>
-                        <option value="night">Night</option>
-                    </select>
-                </label>
-            </div>
             <div ref={mapContainerRef} className="map-container" />
             <div className="info-box">
                 {hoverInfo ? (
