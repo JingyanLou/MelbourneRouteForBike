@@ -8,7 +8,7 @@
 
 /* Section for the ChoroplethMap component */
 .map-section {
-    flex: 7;
+    flex: 9;
     /* Take up 70% of the width */
     padding: 20px;
     /* Add padding around the section */
@@ -16,7 +16,7 @@
 
 /* Sidebar section containing filters and the Barchart component */
 .sidebar {
-    flex: 3;
+    flex: 1;
     /* Take up 30% of the width */
     display: flex;
     /* Use flexbox to arrange child elements */
