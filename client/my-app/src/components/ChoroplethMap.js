@@ -58,7 +58,7 @@ const ChoroplethMap = ({ year, timeZone }) => {
                         30, '#2b8cbe',
                         40, '#045a8d'
                     ],
-                    'fill-opacity': 0.75
+                    'fill-opacity': 0
                 }
             });
 
