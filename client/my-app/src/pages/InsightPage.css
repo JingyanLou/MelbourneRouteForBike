@@ -1,0 +1,33 @@
+/* Container for the entire InsightPage component */
+.insight-page {
+    display: flex;
+    /* Use flexbox to arrange child elements */
+    height: 100vh;
+    /* Full viewport height */
+}
+
+/* Section for the ChoroplethMap component */
+.map-section {
+    flex: 7;
+    /* Take up 70% of the width */
+    padding: 20px;
+    /* Add padding around the section */
+}
+
+/* Sidebar section containing filters and the Barchart component */
+.sidebar {
+    flex: 3;
+    /* Take up 30% of the width */
+    display: flex;
+    /* Use flexbox to arrange child elements */
+    flex-direction: column;
+    /* Arrange child elements in a column */
+    padding: 20px;
+    /* Add padding around the section */
+}
+
+/* Section for the Barchart component within the sidebar */
+.barchart-section {
+    flex: 1;
+    /* Take up the remaining space within the sidebar */
+}

@@ -7,8 +7,14 @@ import Barchart from '../components/Barchart';
 const InsightPage = () => {
     return (
         <div className="insight-page">
-            <ChoroplethMap />
-            <Barchart />
+            <div className="map-section">
+                <ChoroplethMap />
+            </div>
+            <div className="sidebar">
+                <div className="barchart-section">
+                    <Barchart />
+                </div>
+            </div>
         </div>
     );
 };
