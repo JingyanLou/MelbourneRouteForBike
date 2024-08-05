@@ -5,7 +5,6 @@ import ChoroplethMap from '../components/ChoroplethMap';
 import Barchart from '../components/Barchart';
 
 const InsightPage = () => {
-    // Lift state for year and timezone to InsightPage
     const [year, setYear] = useState('2022');
     const [timezone, setTimezone] = useState('Morning');
 

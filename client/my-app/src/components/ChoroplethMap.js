@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import './ChoroplethMap.css';
 
-const ChoroplethMap = ({ year, timezone }) => {
+const ChoroplethMap = ({ year, timeZone }) => {
     const mapContainerRef = useRef(null);
     const [hoverInfo, setHoverInfo] = useState(null);
     const accessToken = process.env.REACT_APP_MAPBOX_CHOROPLETH_ACCESS_TOKEN;
@@ -34,8 +34,8 @@ const ChoroplethMap = ({ year, timezone }) => {
             if (year) {
                 filters.push(['==', 'YEAR', parseInt(year)]);
             }
-            if (timezone) {
-                filters.push(['==', 'TIME_ZONE', timezone]);
+            if (timeZone) {
+                filters.push(['==', 'TIME_ZONE', timeZone]);
             }
 
             const layerFilter = filters.length > 0 ? ['all', ...filters] : true;
@@ -77,7 +77,7 @@ const ChoroplethMap = ({ year, timezone }) => {
         });
 
         return () => map.remove();
-    }, [accessToken, year, timezone]);
+    }, [accessToken, year, timeZone]);
 
     return (
         <div className="choropleth-map-container">
