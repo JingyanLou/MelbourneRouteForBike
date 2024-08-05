@@ -30,6 +30,26 @@ app.get('/api/accidents', (req, res) => {
     });
 });
 
+app.get('/api/accidents/filtered', (req, res) => { //for bar chart
+    const { year, timezone } = req.query;
+    const sql = `
+        SELECT 
+            ACCIDENT_YEAR, TIME_ZONE, 
+            SUM(mild_accidents) AS mild, 
+            SUM(severe_accidents) AS severe, 
+            SUM(fatal_accidents) AS fatal 
+        FROM acc_sub_severity 
+        WHERE ACCIDENT_YEAR = ? AND TIME_ZONE = ?
+        GROUP BY ACCIDENT_YEAR, TIME_ZONE
+    `;
+    db.query(sql, [year, timezone], (err, results) => {
+        if (err) throw err;
+        res.send(results);
+    });
+});
+
+
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
