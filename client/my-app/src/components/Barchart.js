@@ -12,7 +12,9 @@ const Barchart = ({ year, timezone }) => {
 
     useEffect(() => {
         if (year && timezone) {
-            axios.get(`http://13.54.102.8:5000/api/accidents/filtered`, {
+            //http://localhost:5000/api/accidents/filtered
+            //http://13.54.102.8:5000/api/accidents/filtered
+            axios.get(`http://localhost:5000/api/accidents/filtered`, {
                 params: { year, timezone }
             })
                 .then(response => {

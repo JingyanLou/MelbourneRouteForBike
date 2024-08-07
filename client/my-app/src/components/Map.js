@@ -18,7 +18,9 @@ const Map = () => {
 
     const fetchAccidentData = async () => {
         try {
-            const response = await fetch('http://13.54.102.8:5000/api/accidents');
+            //http://localhost:5000/api/accidents
+            //http://13.54.102.8:5000/api/accidents
+            const response = await fetch('http://localhost:5000/api/accidents');
             const data = await response.json();
             const geojson = {
                 type: 'FeatureCollection',

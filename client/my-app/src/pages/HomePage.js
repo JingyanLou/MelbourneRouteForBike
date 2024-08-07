@@ -27,7 +27,7 @@ const HomePage = () => {
             <div className="hero">
                 <img src="/images/melbournebike.jpg" alt="Melbourne Bicycle Path" className="hero-image" />
                 <div className="hero-text">
-                    <h2>Ready to ride? Plan your trip now</h2>
+                    <h2>Ready to plan for the trip?See how many accidents on the selected route</h2>
                     <button className="plan-button" onClick={handlePlanNowClick}>Plan now</button>
                 </div>
                 <div className="down-arrow" onClick={handleScrollDown}>&#x2193;</div>
@@ -41,6 +41,12 @@ const HomePage = () => {
                 </div>
                 <div className="up-arrow" onClick={handleScrollUp}>&#x2191;</div>
             </section>
+
+
+
+
+
+
         </div>
     );
 };
