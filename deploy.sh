@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Print debug information
+echo "Docker username: $DOCKER_USERNAME"
+
+
 # Navigate to the home directory of the ubuntu user
 cd /home/ubuntu
 
