@@ -36,7 +36,7 @@ const InsightPage = () => {
                     <Barchart year={year} timezone={timezone} />
                 </div>
                 <div className="image-section">
-                    <img src="/images/melbournebike.jpg" alt="Legend" className="legend-image" />
+                    <img src="/images/risklevel.jpg" alt="Legend" className="legend-image" />
                 </div>
             </div>
         </div>
