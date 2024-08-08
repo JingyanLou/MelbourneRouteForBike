@@ -25,13 +25,13 @@ jobs:
     - name: Build and push frontend Docker image
       run: |
         cd client/my-app
-        docker build . -t ${{ secrets.DOCKER_USERNAME }}/my-app-frontend:latest
+        docker build --platform linux/amd64 -t ${{ secrets.DOCKER_USERNAME }}/my-app-frontend:latest .
         docker push ${{ secrets.DOCKER_USERNAME }}/my-app-frontend:latest
 
     - name: Build and push backend Docker image
       run: |
         cd server
-        docker build . -t ${{ secrets.DOCKER_USERNAME }}/my-app-backend:latest
+        docker build --platform linux/amd64 -t ${{ secrets.DOCKER_USERNAME }}/my-app-backend:latest .
         docker push ${{ secrets.DOCKER_USERNAME }}/my-app-backend:latest
 
     - name: Deploy to EC2
