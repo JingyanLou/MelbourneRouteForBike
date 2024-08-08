@@ -1,6 +1,9 @@
 # Stage 1: Build
 FROM node:16-alpine AS build
 
+# Set environment variables
+ENV NODE_ENV=production
+
 # Create and change to the app directory.
 WORKDIR /usr/src/app
 
