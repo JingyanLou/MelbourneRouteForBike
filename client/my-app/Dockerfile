@@ -22,30 +22,20 @@ RUN node --max-old-space-size=1024 node_modules/.bin/react-scripts build
 # Stage 2: Runtime
 FROM node:16-alpine
 
+# Set environment variables
+ENV NODE_ENV=production
+
 # Create and change to the app directory.
 WORKDIR /usr/src/app
 
 # Copy the build output from the previous stage to the current stage.
 COPY --from=build /usr/src/app/build /usr/src/app/build
 
-# Copy the public directory from the previous stage to the current stage.
-COPY --from=build /usr/src/app/public /usr/src/app/public
-
-# Copy the src directory from the previous stage to the current stage.
-COPY --from=build /usr/src/app/src /usr/src/app/src
-
-# Copy the .env file
-COPY --from=build /usr/src/app/.env /usr/src/app/.env
-
-# Install only production dependencies with --legacy-peer-deps flag.
-COPY package*.json ./
-RUN npm install --legacy-peer-deps --production
-
-# Clean up npm cache to reduce image size.
-RUN npm cache clean --force
+# Install serve to serve the build files
+RUN npm install -g serve
 
 # Expose port 3000
 EXPOSE 3000
 
 # Run the application
-CMD ["npm", "start"]
+CMD ["serve", "-s", "build"]
