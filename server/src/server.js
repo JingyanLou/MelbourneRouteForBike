@@ -50,7 +50,7 @@ setInterval(() => {
             console.log('Ping query successful:', results);
         }
     });
-}, 60000); // Ping every 60 seconds
+}, 600000); // Ping every 600 seconds
 
 // Route for fetching accident data
 app.get('/api/accidents', (req, res) => {

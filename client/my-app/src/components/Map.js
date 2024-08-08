@@ -58,8 +58,25 @@ const Map = () => {
             const directions = new MapboxDirections({
                 accessToken: mapboxgl.accessToken,
                 unit: 'metric',
-                profile: 'mapbox/cycling'
+                profile: 'mapbox/cycling',
+                controls: {
+                    inputs: true,
+                    instructions: true,
+                    profileSwitcher: false // This disables the profile switcher
+                },
+                bbox: [144.5937, -38.4339, 145.5125, -37.5113], // Bounding box for Melbourne
+                proximity: {
+                    longitude: 144.9631,
+                    latitude: -37.8136
+                }, // Proximity to Melbourne
+                geocoder: {
+                    countries: 'AU', // Restrict results to Australia
+                    bbox: [144.5937, -38.4339, 145.5125, -37.5113], // Further restrict to Melbourne
+                }
             });
+
+
+
 
             directionsContainer.current.appendChild(directions.onAdd(map.current));
 
