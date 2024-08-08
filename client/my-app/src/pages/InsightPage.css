@@ -1,31 +1,32 @@
 /* Container for the entire InsightPage component */
 .insight-page {
     display: flex;
-    /* Use flexbox to arrange child elements */
     height: 90vh;
-    /* Full viewport height */
 }
 
 /* Section for the ChoroplethMap component */
 .map-section {
+    margin-top: 20px;
+    margin-left: 10px;
     flex: 9;
     /* Take up 90% of the width */
-    padding: 20px;
+    padding: 0px;
     /* Add padding around the section */
-
-
+    border-radius: 8px;
+    /* Add rounded corners */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    /* Adjust the shadow to be more prominent */
+    background: rgb(10, 9, 9);
+    /* Optional: Add a background color to make the shadow more visible */
 }
 
-/* Sidebar section containing filters and the Barchart component */
+
+/* Sidebar section containing filters, the Barchart component, and the image */
 .sidebar {
     flex: 1;
-    /* Take up 10% of the width */
     display: flex;
-    /* Use flexbox to arrange child elements */
     flex-direction: column;
-    /* Arrange child elements in a column */
     padding: 20px;
-    /* Add padding around the section */
     align-items: center;
 }
 
@@ -34,10 +35,35 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 10px;
+    width: 95%;
 }
 
 /* Section for the Barchart component within the sidebar */
 .barchart-section {
     flex: 1;
-    /* Take up the remaining space within the sidebar */
+    width: 100%;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+/* Section for the image within the sidebar */
+.image-section {
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Add this to your existing CSS file */
+.legend-image {
+    width: 100%;
+    height: 400px;
+    /* Adjust this height as needed */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
+    /* Ensure the image covers the container */
 }

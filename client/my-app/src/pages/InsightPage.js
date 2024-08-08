@@ -3,6 +3,7 @@ import './InsightPage.css';
 
 import ChoroplethMap from '../components/ChoroplethMap';
 import Barchart from '../components/Barchart';
+//import legendImage from '../public/images/navbrand.jpg'; // Make sure to add the image file in the correct path
 
 const InsightPage = () => {
     const [year, setYear] = useState('2022');
@@ -33,6 +34,9 @@ const InsightPage = () => {
                 </div>
                 <div className="barchart-section">
                     <Barchart year={year} timezone={timezone} />
+                </div>
+                <div className="image-section">
+                    <img src="/images/melbournebike.jpg" alt="Legend" className="legend-image" />
                 </div>
             </div>
         </div>
