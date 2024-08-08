@@ -22,6 +22,7 @@ const Map = () => {
     const fetchAccidentData = async () => {
         try {
             const response = await fetch(`${getApiBaseUrl()}/accidents`);
+            console.log("fetching from: ", `${getApiBaseUrl()}/accidents`);
             const data = await response.json();
             const geojson = {
                 type: 'FeatureCollection',

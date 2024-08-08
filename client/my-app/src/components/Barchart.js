@@ -15,6 +15,7 @@ const Barchart = ({ year, timezone }) => {
 
     useEffect(() => {
         if (year && timezone) {
+            console.log("fetching from: ", `${getApiBaseUrl()}/accidents/filtered`);
             axios.get(`${getApiBaseUrl()}/accidents/filtered`, {
                 params: { year, timezone }
             })

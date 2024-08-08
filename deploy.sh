@@ -22,6 +22,9 @@ if [ "$(docker ps -q -f name=backend)" ]; then
     docker rm backend
 fi
 
+# Remove old Docker images, only keep the most recent one 
+docker image prune -f
+
 # Run the frontend container
 docker run -d --name frontend -p 80:3000 $DOCKER_USERNAME/my-app-frontend:latest
 
