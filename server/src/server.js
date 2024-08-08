@@ -6,31 +6,67 @@ const port = 5000;
 
 app.use(cors());
 
-const db = mysql.createConnection({
+// Database connection configuration
+const dbConfig = {
     host: 'database-1.ctai20qooer2.ap-southeast-2.rds.amazonaws.com',
     user: 'admin',
     password: 'team32monash',
-    database: 'my_database'
-});
+    database: 'my_database',
+};
 
-db.connect(err => {
-    if (err) {
-        throw err;
-    }
-    console.log('MySQL Connected...');
-});
-//`accident_location`
-//VICTORIAN_ROAD_CRASH_DATA_2YR_CBD_URBAN
+// Create a MySQL connection
+let db;
 
+function handleDisconnect() {
+    db = mysql.createConnection(dbConfig); // Recreate the connection
+
+    db.connect(err => {
+        if (err) {
+            console.log('Error when connecting to MySQL:', err);
+            setTimeout(handleDisconnect, 2000); // Retry connection after 2 seconds
+        } else {
+            console.log('MySQL Connected...');
+        }
+    });
+
+    db.on('error', err => {
+        console.log('MySQL error', err);
+        if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+            handleDisconnect(); // Reconnect if the connection is lost
+        } else {
+            throw err;
+        }
+    });
+}
+
+handleDisconnect(); // Initial connection
+
+// Periodic ping to keep the connection alive
+setInterval(() => {
+    db.query('SELECT 1', (err, results) => {
+        if (err) {
+            console.log('Ping query error:', err);
+        } else {
+            console.log('Ping query successful:', results);
+        }
+    });
+}, 60000); // Ping every 60 seconds
+
+// Route for fetching accident data
 app.get('/api/accidents', (req, res) => {
-    const sql = 'SELECT LATITUDE, LONGITUDE, SEVERITY FROM accident_location'; //for the route page, we are using accident_location
+    const sql = 'SELECT LATITUDE, LONGITUDE, SEVERITY FROM accident_location';
     db.query(sql, (err, results) => {
-        if (err) throw err;
-        res.send(results);
+        if (err) {
+            console.error('Error executing query:', err);
+            res.status(500).send('Server error');
+        } else {
+            res.send(results);
+        }
     });
 });
 
-app.get('/api/accidents/filtered', (req, res) => { //for bar chart
+// Route for fetching filtered accident data
+app.get('/api/accidents/filtered', (req, res) => {
     const { year, timezone } = req.query;
     const sql = `
         SELECT 
@@ -43,23 +79,26 @@ app.get('/api/accidents/filtered', (req, res) => { //for bar chart
         GROUP BY ACCIDENT_YEAR, TIME_ZONE
     `;
     db.query(sql, [year, timezone], (err, results) => {
-        if (err) throw err;
-        res.send(results);
+        if (err) {
+            console.error('Error executing query:', err);
+            res.status(500).send('Server error');
+        } else {
+            res.send(results);
+        }
     });
 });
 
-
-
+// Start the server
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
 
-//useful command 
-// check sever running in port 5000 
+// Useful commands
+// Check server running on port 5000
 // lsof -i :5000
 
-//kill that process 
-//kill -9 PID
+// Kill that process
+// kill -9 PID
 
-//run the sever 
-//server % node src/server.js
+// Run the server
+// node src/server.js
