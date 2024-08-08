@@ -6,6 +6,9 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css';
 import './Map.css';
 
+//api 
+import { getApiBaseUrl } from '../utils/api';
+
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
 const Map = () => {
@@ -18,9 +21,7 @@ const Map = () => {
 
     const fetchAccidentData = async () => {
         try {
-            //http://localhost:5000/api/accidents
-            //http://13.54.102.8:5000/api/accidents
-            const response = await fetch('http://localhost:5000/api/accidents');
+            const response = await fetch(`${getApiBaseUrl()}/accidents`);
             const data = await response.json();
             const geojson = {
                 type: 'FeatureCollection',
@@ -42,7 +43,6 @@ const Map = () => {
             return null;
         }
     };
-
     const initializeMap = async () => {
         if (map.current) return; // Initialize map only once
 

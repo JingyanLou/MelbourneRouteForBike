@@ -4,6 +4,9 @@ import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import './Barchart.css';
 
+import { getApiBaseUrl } from '../utils/api';
+
+
 // Register the components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -12,9 +15,7 @@ const Barchart = ({ year, timezone }) => {
 
     useEffect(() => {
         if (year && timezone) {
-            //http://localhost:5000/api/accidents/filtered
-            //http://13.54.102.8:5000/api/accidents/filtered
-            axios.get(`http://localhost:5000/api/accidents/filtered`, {
+            axios.get(`${getApiBaseUrl()}/accidents/filtered`, {
                 params: { year, timezone }
             })
                 .then(response => {
