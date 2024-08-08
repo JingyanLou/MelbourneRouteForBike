@@ -41,7 +41,7 @@ const Barchart = ({ year, timezone }) => {
 
     return (
         <div>
-            <h2>Accident Severity Count</h2>
+            <h3>Accident Severity Count</h3>
             <Bar data={chartData} />
         </div>
     );
